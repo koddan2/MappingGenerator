@@ -21,8 +21,18 @@ namespace MappingGenerator.Mappings
 
         public MappingContext(SyntaxNode contextExpression, SemanticModel semanticModel)
         {
-            var typeDeclaration = contextExpression.FindContainer<TypeDeclarationSyntax>();
-            ContextSymbol =  semanticModel.GetDeclaredSymbol(typeDeclaration) as INamedTypeSymbol;
+            var typeDeclarationType = contextExpression.FindContainer<TypeDeclarationSyntax>();
+            if (typeDeclarationType != null)
+            {
+                ContextSymbol = semanticModel.GetDeclaredSymbol(typeDeclarationType) as INamedTypeSymbol;
+
+            }
+            else
+            {
+                var typeDeclarationObjCreationExpr = contextExpression.FindContainer<ObjectCreationExpressionSyntax>();
+                ContextSymbol = semanticModel.GetDeclaredSymbol(typeDeclarationObjCreationExpr) as INamedTypeSymbol;
+            }
+
             AccessibilityHelper = new AccessibilityHelper(ContextSymbol);
         }
 
@@ -37,7 +47,7 @@ namespace MappingGenerator.Mappings
 
         public bool WrapInCustomConversion { get; set; }
 
-        public List<CustomConversion> CustomConversions { get; }  = new List<CustomConversion>();
+        public List<CustomConversion> CustomConversions { get; } = new List<CustomConversion>();
 
         public CustomConversion? FindConversion(AnnotatedType fromType, AnnotatedType toType)
         {
