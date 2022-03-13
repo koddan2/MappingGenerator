@@ -35,6 +35,7 @@ namespace MappingGenerator.Mappings.SourceFinders
 
         public async Task<MappingElement> FindMappingSource(string targetName, AnnotatedType targetType, MappingContext mappingContext)
         {
+            await Task.CompletedTask;
             var candidate= localSymbols.FirstOrDefault(x => x.Name.Equals(targetName, StringComparison.OrdinalIgnoreCase));
             if (candidate != null)
             {

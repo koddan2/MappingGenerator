@@ -49,7 +49,7 @@ namespace MappingGenerator.Mappings
 
         public List<CustomConversion> CustomConversions { get; } = new List<CustomConversion>();
 
-        public CustomConversion? FindConversion(AnnotatedType fromType, AnnotatedType toType)
+        public CustomConversion FindConversion(AnnotatedType fromType, AnnotatedType toType)
         {
             if (CustomConversions.Count == 0)
             {
